@@ -23,7 +23,8 @@ const jobsController = {
     show: async (req: Request, res: Response) => {
         const { id } = req.params
         const job = await Job.findByPk(id, { include: 'company' })
-        return res.json(job)
+        const candidatesCount = await job?.countCandidates()
+        return res.json({ ...job?.get(), candidatesCount })
     },
 
     update: async (req: Request, res: Response) => {
@@ -51,6 +52,26 @@ const jobsController = {
         })
 
         return res.status(204).send()
+    },
+
+    addCandidate: async (req: Request, res: Response) => {
+        const jobId = req.params.id
+        const { candidateId } = req.body
+
+        const job = await Job.findByPk(jobId)
+        await job?.addCandidate(candidateId)
+
+        return res.status(201).send()
+    },
+
+    removeCandidate: async (req: Request, res: Response) => {
+        const jobId = req.params.id
+        const { candidateId } = req.body
+
+        const job = await Job.findByPk(jobId)
+        await job?.removeCandidate(candidateId)
+
+        return res.status(201).send()
     }
 }
 

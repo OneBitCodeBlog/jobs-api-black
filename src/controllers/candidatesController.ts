@@ -23,7 +23,7 @@ const candidatesController = {
 
     show: async (req: Request, res: Response) => {
         const { id } = req.params
-        const candidate = await Candidate.findByPk(id)
+        const candidate = await Candidate.findByPk(id, { include: 'jobs' })
         return res.json(candidate)
     },
 

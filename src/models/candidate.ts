@@ -37,4 +37,4 @@ const Candidate = sequelize.define<CandidateInstance>(
     }
 )
 
-export { Candidate }
+export { Candidate, CandidateInstance }
