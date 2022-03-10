@@ -1,4 +1,4 @@
-import { Candidate } from '../models/candidate'
+import { Candidate } from '../models'
 import { Request, Response } from 'express'
 
 const candidatesController = {
