@@ -4,14 +4,13 @@ import { Request, Response } from 'express'
 const candidatesController = {
     index: async (req: Request, res: Response) => {
         try {
-            
+            const candidates = await Candidate.findAll()
+            return res.json(candidates)
         } catch (err) {
             if (err instanceof Error) {
                 return res.status(400).json({ message: err.message })
             }
         }
-        const candidates = await Candidate.findAll()
-        return res.json(candidates)
     },
 
     save: async (req: Request, res: Response) => {
