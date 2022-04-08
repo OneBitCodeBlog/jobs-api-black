@@ -1,7 +1,7 @@
 import express from 'express'
-import { candidatesController } from './controllers/candidatesController'
-import { companiesController } from './controllers/companiesController'
-import { jobsController } from './controllers/jobsController'
+import { candidatesController } from './controllers/candidates-controller'
+import { companiesController } from './controllers/companies-controller'
+import { jobsController } from './controllers/jobs-controller'
 
 const router = express.Router()
 

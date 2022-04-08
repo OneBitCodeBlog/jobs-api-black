@@ -52,20 +52,22 @@ const candidatesController = {
         const { id } = req.params
         const { name, bio, email, phone, openToWork } = req.body
 
-
         try {
-            const [affectedRows, candidates] = await Candidate.update({
-                name,
-                bio,
-                email,
-                phone,
-                openToWork
-            }, {
-                where: { id },
-                returning: true
-            })
-    
-            return res.json(candidates[0])
+            const candidate = await Candidate.findByPk(id)
+
+            if (candidate === null) {
+                return res.status(404).json({ message: 'Candidato não encontrado' })
+            }
+
+            candidate.name = name
+            candidate.bio = bio
+            candidate.email = email
+            candidate.phone = phone
+            candidate.openToWork = openToWork
+
+            await candidate.save()
+
+            return res.status(200).json(candidate)
         } catch (err) {
             if (err instanceof Error) {
                 return res.status(400).json({ message: err.message })
