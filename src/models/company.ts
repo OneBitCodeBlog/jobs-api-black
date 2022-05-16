@@ -1,31 +1,36 @@
-import { sequelize } from '../database'
-import { DataTypes, Model } from 'sequelize'
+import { DataTypes, Model, Optional, Sequelize } from 'sequelize'
 
-interface ComapnyInstance extends Model {
+export interface Company {
     id: number
     name: string
-    bio: string
-    website: string
-    email: string
+    bio?: string
+    website?: string
+    email?: string
 }
 
-const Company = sequelize.define<ComapnyInstance>(
-    'companies',
-    {
-        id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            autoIncrement: true,
-            primaryKey: true
-        },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        bio: DataTypes.TEXT,
-        website: DataTypes.STRING,
-        email: DataTypes.STRING
-    }
-)
+export interface CompanyCreationAttributes extends Optional<Company, 'id' | 'bio' | 'website' | 'email'> { }
 
-export { Company }
+export interface ComapnyInstance extends Model<Company, CompanyCreationAttributes>, Company { }
+
+export default (sequelize: Sequelize) => {
+    const Company = sequelize.define<ComapnyInstance, Company>(
+        'companies',
+        {
+            id: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                autoIncrement: true,
+                primaryKey: true
+            },
+            name: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            bio: DataTypes.TEXT,
+            website: DataTypes.STRING,
+            email: DataTypes.STRING
+        }
+    )
+
+    return Company
+}

@@ -1,11 +1,16 @@
-import { Sequelize } from 'sequelize'
+import { Options, Sequelize } from 'sequelize'
 
-const dbUrl = process.env.DATABASE_URL || ''
+export function connect() {
+  const dbUrl = process.env.DATABASE_URL
 
-const sequelize = new Sequelize(dbUrl, {
-  define: {
-    underscored: true
+  if (dbUrl === undefined) throw new Error('DATABASE_URL environment variable is not defined')
+
+  const defaultOptions: Options = {
+    define: { underscored: true },
+    logging: process.env.NODE_ENV !== 'test' ? console.log : false,
   }
-})
 
-export { sequelize }
+  const sequelize = new Sequelize(dbUrl, defaultOptions)
+
+  return sequelize
+}
